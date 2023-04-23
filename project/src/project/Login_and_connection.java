@@ -62,7 +62,7 @@ class Login_and_connection extends JFrame {
                         System.out.println("Connection active: " + event.getConnection());
                     }
                 });
-                
+                this.dispose();
                 // exits the login window but not the program.
                 /**<code>this.dispose();</code>**/
             } catch (SQLException ex) {
