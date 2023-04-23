@@ -20,10 +20,12 @@ class Login_and_connection extends JFrame {
     // preparing user interface.
     private JTextField URL_textField = new YTextField("jdbc:sqlserver://localhost;databaseName=Project;integratedSecurity=true;encrypt=true;trustServerCertificate=true;", 105,  20, width * 5, height);
     private JLabel URL_Label = new YLabel("URL:",  20,  20,  width,  height);
-    private JTextField userName_textField = new YTextField("",  105,  50, width, height);;
+    private JTextField userName_textField = new YTextField("",  105,  50, width, height);
     private JLabel userName_Label = new YLabel("Username:",  20,  50,  width,  height);
     private JTextField password_textField = new YTextField("",  105,  80, width, height);
     private JLabel password_Label = new YLabel("Password:",  20,  80,  width,  height);
+    private JTextField table_textField = new YTextField("",  115 + width + 50,  50, width, height);
+    private JLabel table_Label = new YLabel("table:",  115 + width,  50,  width,  height);
     private JButton connectButton;
     private JLabel statusLabel = new YLabel("Disconnected",  WindowWidth - (width + 30),  WindowHeight - (height + 50),  width,  height);    
     
@@ -55,7 +57,7 @@ class Login_and_connection extends JFrame {
                 statusLabel.setText("Connected");
                 
                 // creates main program frame.
-                NativeUI frame = new NativeUI("Native java UI", conn);
+                NativeUI frame = new NativeUI("Native java UI", conn, "books");
                 frame.addConnectionEventListener(new ConnectionEventListener() {
                     @Override
                     public void connectionEstablished(ConnectionEvent event) {
@@ -70,12 +72,16 @@ class Login_and_connection extends JFrame {
                 statusLabel.setText("Connection failed: " + ex.getMessage());
             }
         
+            
     };
     
     
 
         // Create connection button.
         connectButton = new YButton("connect",  20,  WindowHeight - (height + 50),  width,  height,  connectButtonActionListener,  theam);
+        
+        // Default table
+        table_textField.setText("books");
         
         
         // set a new clean layout.
@@ -89,12 +95,15 @@ class Login_and_connection extends JFrame {
         this.add(password_Label);
         this.add(password_textField);
         this.add(connectButton);
+        this.add(table_textField);
+        this.add(table_Label);
         this.add(statusLabel);
         
         // Set window properties
         addWindowListener (new WindowAdapter() {@Override public void windowClosing (WindowEvent e){dispose();}});    
         setSize(WindowWidth, WindowHeight);
         setLocationRelativeTo(null);
+        setResizable(false);
         setVisible(true);
     }
 
