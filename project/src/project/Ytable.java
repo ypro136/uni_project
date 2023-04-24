@@ -9,12 +9,18 @@ import javax.swing.table.*;
 
 public class Ytable extends javax.swing.JTable{
 	
+	private int rowCount;
+    private int columnCount;
+	
 	private DefaultTableModel tableModel = new DefaultTableModel();
 	
 	
-	Ytable(int rowCount, int columnCount, int fullWidth)
+	Ytable(int row_Count, int column_Count, int fullWidth)
 	{
-		super(rowCount, columnCount);
+		super(row_Count, column_Count);
+		
+		rowCount = row_Count;
+		columnCount = column_Count;
     
 		tableModel.addColumn("ISBN");
 		tableModel.addColumn("title");
@@ -23,6 +29,7 @@ public class Ytable extends javax.swing.JTable{
 		tableModel.addColumn("price");
     
 		tableModel.setColumnCount(columnCount);
+		//tableModel.setRowCount(rowCount);
 
 		this.setBounds(13, 60, fullWidth, 400);
     	
@@ -34,6 +41,8 @@ public class Ytable extends javax.swing.JTable{
 		this.getColumnModel().getColumn(2).setPreferredWidth((fullWidth / 100) * 10);
 		this.getColumnModel().getColumn(3).setPreferredWidth((fullWidth / 100) * 10);
 		this.getColumnModel().getColumn(4).setPreferredWidth((fullWidth / 100) * 35);
+		
+		tableModel.addRow(new Object[] {"ISBN", "title", "type", "page count", "price"});
 	}
 	
 	public void addData(Connection connection, String table_name) 
@@ -41,7 +50,6 @@ public class Ytable extends javax.swing.JTable{
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("select * from " + table_name);
-			tableModel.addRow(new Object[] {"ISBN", "title", "type", "page count", "price"});
 			while(resultSet.next())
 			{
 				tableModel.addRow(new Object[] {resultSet.getInt("ISBN"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getInt("page count"), resultSet.getInt("price")});
@@ -52,5 +60,37 @@ public class Ytable extends javax.swing.JTable{
 		} catch (SQLException exception) {
 			System.out.print(exception);
 		}
+	}
+	
+	public void updateData(Connection connection, String table_name) 
+	{
+		
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("select * from " + table_name);
+			
+			// clears the table model and adds data back.
+			tableModel = new DefaultTableModel();
+			tableModel.addColumn("ISBN");
+			tableModel.addColumn("title");
+			tableModel.addColumn("type");
+			tableModel.addColumn("page count");
+			tableModel.addColumn("price");
+	    
+			tableModel.setColumnCount(columnCount);
+			tableModel.addRow(new Object[] {"ISBN", "title", "type", "page count", "price"});
+
+			while(resultSet.next())
+			{
+				tableModel.addRow(new Object[] {resultSet.getInt("ISBN"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getInt("page count"), resultSet.getInt("price")});
+			}
+			this.setModel(tableModel);
+
+			
+		} catch (SQLException exception) {
+			System.out.print(exception);
+		}
+
+		
 	}
 }

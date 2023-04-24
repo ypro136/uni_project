@@ -73,15 +73,18 @@ public class NativeUI extends Frame implements ActionListener{
         // preparing Action Listeners for the buttons using lambda expressions.
         ActionListener insertActionListener = (ActionEvent event) -> {
         	SqlClass.executeNonquary("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "','" + type_textField.getText() + "'," + Integer.parseInt(page_count_textField.getText()) +"," + Integer.parseInt(price_textField.getText()) + ")");
-            statusLabel.setText("insert Button clicked.");
+        	table.updateData(connection,  table_name); 
+        	statusLabel.setText("insert Button clicked.");
         };
         ActionListener updateActionListener = (ActionEvent event) -> {
         	SqlClass.executeNonquary("update " + table_name + " set title ='" + title_textField.getText() + "', type ='" + type_textField.getText() + "', [page count] =" + Integer.parseInt(page_count_textField.getText()) + ", price =" + Integer.parseInt(price_textField.getText()) + " where ISBN =" + ISBN_textField.getText());
-            statusLabel.setText("update Button clicked.");
+        	table.updateData(connection,  table_name); 
+        	statusLabel.setText("update Button clicked.");
         };
         ActionListener deleteActionListener = (ActionEvent event) -> {
         	SqlClass.executeNonquary("delete from " + table_name + " where ISBN = " + ISBN_textField.getText());
-            statusLabel.setText("delete Button clicked.");
+        	table.updateData(connection,  table_name); 
+        	statusLabel.setText("delete Button clicked.");
         };
         ActionListener searchActionListener = (ActionEvent event) -> {
             statusLabel.setText("search Button clicked.");
@@ -89,9 +92,9 @@ public class NativeUI extends Frame implements ActionListener{
         ActionListener debugActionListener = (ActionEvent event) -> {
             statusLabel.setText("debug Button clicked.");
             fireConnectionEvent(new ConnectionEvent(this, connection));
-            System.out.print("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "','" + type_textField.getText() + "'," + Integer.parseInt(page_count_textField.getText()) +"," + Integer.parseInt(price_textField.getText()) + ")\n");
-            System.out.print("update " + table_name + " set title ='" + title_textField.getText() + "', type ='" + type_textField.getText() + "', [page count] =" + Integer.parseInt(page_count_textField.getText()) + ", price =" + Integer.parseInt(price_textField.getText()) + " where ISBN =" + ISBN_textField.getText());
-            table.addData(connection, table_name);
+            //System.out.print("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "','" + type_textField.getText() + "'," + Integer.parseInt(page_count_textField.getText()) +"," + Integer.parseInt(price_textField.getText()) + ")\n");
+            //System.out.print("update " + table_name + " set title ='" + title_textField.getText() + "', type ='" + type_textField.getText() + "', [page count] =" + Integer.parseInt(page_count_textField.getText()) + ", price =" + Integer.parseInt(price_textField.getText()) + " where ISBN =" + ISBN_textField.getText());
+            table.updateData(connection,  table_name); 
         };
         
         // creates buttons and adds buttons and labels.
@@ -114,11 +117,6 @@ public class NativeUI extends Frame implements ActionListener{
         add(page_count_textField);
         add(price_textField);
         
-        
-        
-        
-        	
-        
         setResizable(false);
         
         add(table);
@@ -127,6 +125,14 @@ public class NativeUI extends Frame implements ActionListener{
         
         setVisible(true);
    }
+    /**
+     * Contains all the creation and modeling of buttons , labels, TextField and Action Listeners. 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * */
     
   
     // Override of actionPerformed function because lambda expressions don't count.
