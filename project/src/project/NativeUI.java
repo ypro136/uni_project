@@ -21,15 +21,19 @@ public class NativeUI extends Frame implements ActionListener{
     final private int labelHeight = 25;
     final private int WindowWidth = 900;
     final private int WindowHeight = 600;
+    final private int rowCount = 3;
+    final private int columnCount = 5;
     final private Color theam = new Color(80, 140, 150);
     Connection connection;
     
     // preparing user interface.
-    private JTextField ISBN_textField = new YTextField("",  13,  470, 85, 25);
-    private JTextField title_textField = new YTextField("",  13 + 85,  470, 85, 25);
-    private JTextField type_textField = new YTextField("",  13 + 85 + 85,  470, 85, 25);
-    private JTextField page_count_textField = new YTextField("",  13 + 85 + 85 + 85,  470, 85, 25);
-    private JTextField price_textField = new YTextField("",  13 + 85 + 85 + 85 + 85,  470, 85, 25);
+    private JTextField ISBN_textField = new YTextField("47185545",  13,  470, 85, 25);
+    private JTextField title_textField = new YTextField("biochemistry",  13 + 85,  470, 85, 25);
+    private JTextField type_textField = new YTextField("textbook",  13 + 85 + 85,  470, 85, 25);
+    private JTextField page_count_textField = new YTextField("522",  13 + 85 + 85 + 85,  470, 85, 25);
+    private JTextField price_textField = new YTextField("18",  13 + 85 + 85 + 85 + 85,  470, 85, 25);
+    
+    private Ytable table = new Ytable(rowCount, columnCount, (WindowWidth - 25));
     
     // Event Listener List for connection and SQL Events.
     EventListenerList eventListenerList = new EventListenerList();
@@ -68,13 +72,15 @@ public class NativeUI extends Frame implements ActionListener{
         
         // preparing Action Listeners for the buttons using lambda expressions.
         ActionListener insertActionListener = (ActionEvent event) -> {
-        	SqlClass.executeNonquary("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "'," + type_textField.getText() + "'," + page_count_textField.getText() +"'," + price_textField.getText() + ")");
+        	SqlClass.executeNonquary("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "','" + type_textField.getText() + "'," + Integer.parseInt(page_count_textField.getText()) +"," + Integer.parseInt(price_textField.getText()) + ")");
             statusLabel.setText("insert Button clicked.");
         };
         ActionListener updateActionListener = (ActionEvent event) -> {
+        	SqlClass.executeNonquary("update " + table_name + " set title ='" + title_textField.getText() + "', type ='" + type_textField.getText() + "', [page count] =" + Integer.parseInt(page_count_textField.getText()) + ", price =" + Integer.parseInt(price_textField.getText()) + " where ISBN =" + ISBN_textField.getText());
             statusLabel.setText("update Button clicked.");
         };
         ActionListener deleteActionListener = (ActionEvent event) -> {
+        	SqlClass.executeNonquary("delete from " + table_name + " where ISBN = " + ISBN_textField.getText());
             statusLabel.setText("delete Button clicked.");
         };
         ActionListener searchActionListener = (ActionEvent event) -> {
@@ -83,6 +89,9 @@ public class NativeUI extends Frame implements ActionListener{
         ActionListener debugActionListener = (ActionEvent event) -> {
             statusLabel.setText("debug Button clicked.");
             fireConnectionEvent(new ConnectionEvent(this, connection));
+            System.out.print("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "','" + type_textField.getText() + "'," + Integer.parseInt(page_count_textField.getText()) +"," + Integer.parseInt(price_textField.getText()) + ")\n");
+            System.out.print("update " + table_name + " set title ='" + title_textField.getText() + "', type ='" + type_textField.getText() + "', [page count] =" + Integer.parseInt(page_count_textField.getText()) + ", price =" + Integer.parseInt(price_textField.getText()) + " where ISBN =" + ISBN_textField.getText());
+            table.addData(connection, table_name);
         };
         
         // creates buttons and adds buttons and labels.
@@ -105,52 +114,16 @@ public class NativeUI extends Frame implements ActionListener{
         add(page_count_textField);
         add(price_textField);
         
-        int rowCount = 3;
-        int columnCount = 5;
-        
-        javax.swing.table.DefaultTableModel tableModel = new javax.swing.table.DefaultTableModel();
         
         
-        tableModel.addColumn("ISBN");
-        tableModel.addColumn("title");
-        tableModel.addColumn("type");
-        tableModel.addColumn("page count");
-        tableModel.addColumn("price");
         
-        tableModel.setColumnCount(columnCount);
-        //tableModel.setRowCount(rowCount);
-
-        javax.swing.JTable table = new javax.swing.JTable(rowCount, columnCount);
-        
-        table.setModel(tableModel);
-        
-        table.setBounds(13, 60, WindowWidth - 25, 400);
-        
-        table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        
-        	
-        table.getColumnModel().getColumn(0).setWidth(((WindowWidth - 25) / 100) * 15);
-        table.getColumnModel().getColumn(1).setPreferredWidth(((WindowWidth - 25) / 100) * 30);
-        table.getColumnModel().getColumn(2).setPreferredWidth(((WindowWidth - 25) / 100) * 10);
-        table.getColumnModel().getColumn(3).setPreferredWidth(((WindowWidth - 25) / 100) * 5);
-        table.getColumnModel().getColumn(4).setPreferredWidth(((WindowWidth - 25) / 100) * 40);
         	
         
         setResizable(false);
         
         add(table);
         
-        try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("select * from " + table_name);
-			while(resultSet.next())
-			{
-				tableModel.addRow(new Object[] {resultSet.getInt("ISBN"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getInt("page count"), resultSet.getInt("price")});
-			}
-			
-		} catch (SQLException exception) {
-			System.out.print(exception);
-		}
+        table.addData(connection, table_name);
         
         setVisible(true);
    }
