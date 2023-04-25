@@ -57,14 +57,14 @@ class Login_and_connection extends JFrame {
                 statusLabel.setText("Connected");
                 
                 // creates main program frame.
-                NativeUI frame = new NativeUI("Native java UI", conn, "books");
+                NativeUI frame = new NativeUI("Native java UI", conn, table_textField.getText().trim());
                 frame.addConnectionEventListener(new ConnectionEventListener() {
                     @Override
                     public void connectionEstablished(ConnectionEvent event) {
                         System.out.println("Connection active: " + event.getConnection());
                     }
                 });
-                this.dispose();
+                //this.dispose();
                 // exits the login window but not the program.
                 /**<code>this.dispose();</code>**/
             } catch (SQLException ex) {

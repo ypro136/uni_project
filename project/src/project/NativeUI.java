@@ -3,6 +3,7 @@ package project;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import javax.swing.*;
 
 import javax.swing.JTextField;
 import javax.swing.event.EventListenerList;
@@ -24,6 +25,10 @@ public class NativeUI extends Frame implements ActionListener{
     final private int rowCount = 3;
     final private int columnCount = 5;
     final private Color theam = new Color(80, 140, 150);
+    
+    final private String[] choices = { "author","books", "publisher","written"};
+    
+    
     Connection connection;
     
     // preparing user interface.
@@ -34,6 +39,8 @@ public class NativeUI extends Frame implements ActionListener{
     private JTextField price_textField = new YTextField("18",  13 + 85 + 85 + 85 + 85,  470, 85, 25);
     
     private Ytable table = new Ytable(rowCount, columnCount, (WindowWidth - 25));
+    
+    private JComboBox<String> dropDown  = new JComboBox<String>(choices);
     
     // Event Listener List for connection and SQL Events.
     EventListenerList eventListenerList = new EventListenerList();
@@ -72,29 +79,32 @@ public class NativeUI extends Frame implements ActionListener{
         
         // preparing Action Listeners for the buttons using lambda expressions.
         ActionListener insertActionListener = (ActionEvent event) -> {
-        	SqlClass.executeNonquary("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "','" + type_textField.getText() + "'," + Integer.parseInt(page_count_textField.getText()) +"," + Integer.parseInt(price_textField.getText()) + ")");
+        	SqlClass.executeNonquary("insert into " + table_name + " values(" + ISBN_textField.getText().trim() + ",'" + title_textField.getText().trim() + "','" + type_textField.getText().trim() + "'," + Integer.parseInt(page_count_textField.getText().trim()) +"," + Integer.parseInt(price_textField.getText().trim()) + ")");
         	table.updateData(connection,  table_name); 
         	statusLabel.setText("insert Button clicked.");
         };
         ActionListener updateActionListener = (ActionEvent event) -> {
-        	SqlClass.executeNonquary("update " + table_name + " set title ='" + title_textField.getText() + "', type ='" + type_textField.getText() + "', [page count] =" + Integer.parseInt(page_count_textField.getText()) + ", price =" + Integer.parseInt(price_textField.getText()) + " where ISBN =" + ISBN_textField.getText());
+        	SqlClass.executeNonquary("update " + table_name + " set title ='" + title_textField.getText().trim() + "', type ='" + type_textField.getText().trim() + "', [page count] =" + Integer.parseInt(page_count_textField.getText().trim()) + ", price =" + Integer.parseInt(price_textField.getText().trim()) + " where ISBN =" + ISBN_textField.getText().trim());
         	table.updateData(connection,  table_name); 
         	statusLabel.setText("update Button clicked.");
         };
         ActionListener deleteActionListener = (ActionEvent event) -> {
-        	SqlClass.executeNonquary("delete from " + table_name + " where ISBN = " + ISBN_textField.getText());
+        	SqlClass.executeNonquary("delete from " + table_name + " where ISBN = " + ISBN_textField.getText().trim());
         	table.updateData(connection,  table_name); 
         	statusLabel.setText("delete Button clicked.");
         };
         ActionListener searchActionListener = (ActionEvent event) -> {
+        	table.searchData(connection, table_name, ISBN_textField.getText().trim());
             statusLabel.setText("search Button clicked.");
         };
         ActionListener debugActionListener = (ActionEvent event) -> {
             statusLabel.setText("debug Button clicked.");
             fireConnectionEvent(new ConnectionEvent(this, connection));
-            //System.out.print("insert into " + table_name + " values(" + ISBN_textField.getText() + ",'" + title_textField.getText() + "','" + type_textField.getText() + "'," + Integer.parseInt(page_count_textField.getText()) +"," + Integer.parseInt(price_textField.getText()) + ")\n");
-            //System.out.print("update " + table_name + " set title ='" + title_textField.getText() + "', type ='" + type_textField.getText() + "', [page count] =" + Integer.parseInt(page_count_textField.getText()) + ", price =" + Integer.parseInt(price_textField.getText()) + " where ISBN =" + ISBN_textField.getText());
+            //System.out.print("insert into " + table_name + " values(" + ISBN_textField.getText().trim() + ",'" + title_textField.getText().trim() + "','" + type_textField.getText().trim() + "'," + Integer.parseInt(page_count_textField.getText().trim()) +"," + Integer.parseInt(price_textField.getText().trim()) + ")\n");
+            //System.out.print("update " + table_name + " set title ='" + title_textField.getText().trim() + "', type ='" + type_textField.getText().trim() + "', [page count] =" + Integer.parseInt(page_count_textField.getText().trim()) + ", price =" + Integer.parseInt(price_textField.getText().trim()) + " where ISBN =" + ISBN_textField.getText().trim());
             table.updateData(connection,  table_name); 
+            
+            //table.
         };
         
         // creates buttons and adds buttons and labels.

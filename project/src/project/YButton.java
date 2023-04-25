@@ -23,15 +23,16 @@ public class YButton  extends javax.swing.JButton{
         
         this.addActionListener(Listener);
        
+        /**
+         * creates a <code>JButton</code> using coordinates and transforms
+         * 
+         * 
+         * 
+         * 
+         * 
+         * */
     }
-    /**
-     * creates a <code>JButton</code> using coordinates and transforms
-     * 
-     * 
-     * 
-     * 
-     * 
-     * */
+    
     
 }
 

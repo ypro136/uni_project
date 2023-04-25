@@ -29,7 +29,6 @@ public class Ytable extends javax.swing.JTable{
 		tableModel.addColumn("price");
     
 		tableModel.setColumnCount(columnCount);
-		//tableModel.setRowCount(rowCount);
 
 		this.setBounds(13, 60, fullWidth, 400);
     	
@@ -76,13 +75,49 @@ public class Ytable extends javax.swing.JTable{
 			tableModel.addColumn("type");
 			tableModel.addColumn("page count");
 			tableModel.addColumn("price");
-	    
 			tableModel.setColumnCount(columnCount);
 			tableModel.addRow(new Object[] {"ISBN", "title", "type", "page count", "price"});
+			
+			
 
 			while(resultSet.next())
 			{
 				tableModel.addRow(new Object[] {resultSet.getInt("ISBN"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getInt("page count"), resultSet.getInt("price")});
+				
+			}
+			this.setModel(tableModel);
+
+			
+		} catch (SQLException exception) {
+			System.out.print(exception);
+		}
+
+		
+	}
+	
+	public void searchData(Connection connection, String table_name, String ISBN) 
+	{
+		
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("select * from " + table_name + " where ISBN =" + ISBN);
+			
+			// clears the table model and adds data back.
+			tableModel = new DefaultTableModel();
+			tableModel.addColumn("ISBN");
+			tableModel.addColumn("title");
+			tableModel.addColumn("type");
+			tableModel.addColumn("page count");
+			tableModel.addColumn("price");
+			tableModel.setColumnCount(columnCount);
+			tableModel.addRow(new Object[] {"ISBN", "title", "type", "page count", "price"});
+			
+			
+
+			while(resultSet.next())
+			{
+				tableModel.addRow(new Object[] {resultSet.getInt("ISBN"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getInt("page count"), resultSet.getInt("price")});
+				
 			}
 			this.setModel(tableModel);
 
