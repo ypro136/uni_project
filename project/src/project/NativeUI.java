@@ -24,7 +24,7 @@ public class NativeUI extends Frame implements ActionListener{
     final private int WindowHeight = 600;
     final private int rowCount = 3;
     final private int columnCount = 5;
-    final private Color theam = new Color(80, 140, 150);
+    
     
     final private String[] choices = { "author","books", "publisher","written"};
     
@@ -104,21 +104,22 @@ public class NativeUI extends Frame implements ActionListener{
             //System.out.print("update " + table_name + " set title ='" + title_textField.getText().trim() + "', type ='" + type_textField.getText().trim() + "', [page count] =" + Integer.parseInt(page_count_textField.getText().trim()) + ", price =" + Integer.parseInt(price_textField.getText().trim()) + " where ISBN =" + ISBN_textField.getText().trim());
             table.updateData(connection,  table_name); 
             
-            //table.
         };
         
+        
+        
         // creates buttons and adds buttons and labels.
-        YButton insertButton = new YButton("insert", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 0, buttonWidth, buttonHeight, insertActionListener, theam);
-        YButton updateButton = new YButton("update", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 1, buttonWidth, buttonHeight, updateActionListener, theam);
-        YButton deleteButton = new YButton("delete", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 2, buttonWidth, buttonHeight, deleteActionListener, theam);
-        YButton searchButton = new YButton("search", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 3, buttonWidth, buttonHeight, searchActionListener, theam);
-        YButton debugButton = new YButton("debug", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 4, buttonWidth, buttonHeight, debugActionListener, theam);
+        YButton insertButton = new YButton("insert", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 0, buttonWidth, buttonHeight, insertActionListener);
+        YButton updateButton = new YButton("update", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 1, buttonWidth, buttonHeight, updateActionListener);
+        YButton deleteButton = new YButton("delete", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 2, buttonWidth, buttonHeight, deleteActionListener);
+        YButton searchButton = new YButton("search", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 3, buttonWidth, buttonHeight, searchActionListener);
+        YButton debugButton = new YButton("debug", WindowWidth - (buttonWidth + 10), 600 - (buttonHeight * 5 + 10) + buttonHeight * 4, buttonWidth, buttonHeight, debugActionListener);
         add(insertButton);
         add(updateButton);
         add(deleteButton);
         add(searchButton);
         add(debugButton);
-        add(statusLabel);
+        //add(statusLabel);
         
         // adds text Fields.
         add(ISBN_textField);

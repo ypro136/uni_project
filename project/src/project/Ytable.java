@@ -1,5 +1,6 @@
 package project;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,9 @@ import java.sql.Statement;
 import javax.swing.table.*;
 
 public class Ytable extends javax.swing.JTable{
+	
+	final private Color Background = new Color(187, 191, 202);
+	final private Color Foreground = new Color(73, 84, 100);
 	
 	private int rowCount;
     private int columnCount;
@@ -31,6 +35,9 @@ public class Ytable extends javax.swing.JTable{
 		tableModel.setColumnCount(columnCount);
 
 		this.setBounds(13, 60, fullWidth, 400);
+		
+		this.setBackground(Background);
+		this.setForeground(Foreground);
     	
 		this.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
     

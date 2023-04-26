@@ -15,7 +15,7 @@ class Login_and_connection extends JFrame {
     final private int height = 25;
     final private int WindowWidth = 600;
     final private int WindowHeight = 200;
-    final private Color theam = new Color(80, 140, 150);
+    final private Color theam = new Color(26, 95, 122);
 
     // preparing user interface.
     private JTextField URL_textField = new YTextField("jdbc:sqlserver://localhost;databaseName=Project;integratedSecurity=true;encrypt=true;trustServerCertificate=true;", 105,  20, width * 5, height);
@@ -37,6 +37,10 @@ class Login_and_connection extends JFrame {
     	// implements a Frame constructor that generates a initially invisible Frame object with a title.
         super(title);
         
+        setBackground(theam);
+        
+        setForeground(theam);
+        
         // preparing Action Listener for the connect button using lambda expression.
         ActionListener connectButtonActionListener = (ActionEvent e) -> {
             // gets URL, user name and password to store them.
@@ -57,7 +61,7 @@ class Login_and_connection extends JFrame {
                 statusLabel.setText("Connected");
                 
                 // creates main program frame.
-                NativeUI frame = new NativeUI("Native java UI", conn, table_textField.getText().trim());
+                NativeUI frame = new NativeUI(table_textField.getText().trim(), conn, table_textField.getText().trim());
                 frame.addConnectionEventListener(new ConnectionEventListener() {
                     @Override
                     public void connectionEstablished(ConnectionEvent event) {
@@ -78,7 +82,7 @@ class Login_and_connection extends JFrame {
     
 
         // Create connection button.
-        connectButton = new YButton("connect",  20,  WindowHeight - (height + 50),  width,  height,  connectButtonActionListener,  theam);
+        connectButton = new YButton("connect",  20,  WindowHeight - (height + 50),  width,  height,  connectButtonActionListener);
         
         // Default table
         table_textField.setText("books");
